@@ -1,4 +1,5 @@
 import logging
+import time
 import sys
 import os
 
@@ -16,6 +17,13 @@ if __name__ == "__main__":
         format="[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s"
     )
 
-    iterations = 50
+    logger = logging.getLogger(__name__)
+    iterations = 100
 
-    awf.execute(iterations)
+    while iterations > 0:
+        iterations -= awf.execute(iterations)
+        if iterations > 0:
+            logger.warn("Not all iterations were completed, continuing")
+            time.sleep(5)
+        else:
+            logger.info("Done")
